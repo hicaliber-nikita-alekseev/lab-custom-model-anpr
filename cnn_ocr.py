@@ -25,14 +25,8 @@ from tensorflow.contrib.eager.python import tfe
 tf.enable_eager_execution()
 tf.set_random_seed(0)
 
-NUMS =['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-CHARS=['가', '나', '다', '라', '마', '거', '너', '더', '러', '머', '고', '노', '도', '로', '모', '구', '누', '두', '루', '무', 
-       '버', '서', '어', '저', '처', '커', '터', '퍼', '보', '소', '오', '조', '초', '코', '토', '포', '부', '수', '우', '주', '추', '쿠', '투', '푸', '후', 
-       '그', '느', '드', '르', '므', '브', '스', '으', '즈', '츠', '크', '트', '프', '흐',
-       '바', '사', '아', '자', '차', '카', '타', '파', '하', '허', '호']
-SPACE=[' ']
-JOIN =NUMS + CHARS + SPACE
-n_chr = len(JOIN)
+import constants
+n_chr=len(constants.JOIN)
 
 def parse_args():
     

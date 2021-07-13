@@ -15,16 +15,17 @@ The diagram below shows an example of approaches that prepare a machine learning
 
 <img src='imgs/ml_projects.png' stype='width:600px;'/>  
 
-We will use the Korean license plate as test data. Each country's license plate has a limited number of characters. In Korea, the following 81 characters are used. You can generate random 7 character sequences (6 numbers and 1 Korean character at 3rd position) as test data by composing these characters. (source: [Wikipedia](https://ko.wikipedia.org/wiki/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%B0%A8%EB%9F%89_%EB%B2%88%ED%98%B8%ED%8C%90))
+We will use the Australian license plate as test data. Each country's license plate has a limited number of characters. In Korea, the following 81 characters are used. You can generate random 7 character sequences (6 numbers and 1 Australian character at 3rd position) as test data by composing these characters. (source: [Wikipedia](https://ko.wikipedia.org/wiki/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%B0%A8%EB%9F%89_%EB%B2%88%ED%98%B8%ED%8C%90))
 ```python
 NUMS =['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-CHARS=['가', '나', '다', '라', '마', '거', '너', '더', '러', '머', '고', '노', '도', '로', '모', '구', '누', '두', '루', '무', '버', '서', '어', '저', '처', '커', '터', '퍼', '보', '소', '오', '조', '초', '코', '토', '포', '부', '수', '우', '주', '추', '쿠', '투', '푸', '후',  '그', '느', '드', '르', '므', '브', '스', '으', '즈', '츠', '크', '트', '프', '흐', '바', '사', '아', '자', '차', '카', '타', '파', '하', '허', '호']
+CHARS=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 SPACE=[' ']
 JOIN =NUMS + CHARS + SPACE
 ```
-As you have noticed, it is just a list of possible characters and we will use the index of this list as our training and inference. This means you can generalize our problem to the problem of other country's license plate character detection as well as the problem of reading the product serial numbers or signboards. For example, Japanese license plates can have the following characters with numbers according to Wikipedia. (source: [Wikipedia](https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Japan))
+As you have noticed, it is just a list of possible characters and we will use the index of this list as our training and inference. This means you can generalize our problem to the problem of other country's license plate character detection as well as the problem of reading the product serial numbers or signboards. For example, Japanese license plates can have the following characters with numbers according to Wikipedia. (source: [Wikipedia](https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Australia))
 ```python
-CHARS=['さ', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'ろ', 'れ', 'わ', 'あ', 'い', 'う', 'え', 'か', 'き', 'く', 'け', 'こ', 'を']
+CHARS=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
 ```
 <br />
 
@@ -184,7 +185,7 @@ When you finish Lab3, you will see the result like below:
 ['0', '5', '느', '4', '9', '4', '6']  
 <br />
 
-You may find some mistakes like third result above. (it recognized Korean character '노' as '느'.) It is a natural at the first stage of the ML project. You may add more synthesized data or real data, change the internal architecture of CNN, or break the problem to 3 sub problems (Finding character areas and classifying the character), etc. You will repeat these experiments until you get the desired target quality.
+You may find some mistakes like third result above. (it recognized Australian character '노' as '느'.) It is a natural at the first stage of the ML project. You may add more synthesized data or real data, change the internal architecture of CNN, or break the problem to 3 sub problems (Finding character areas and classifying the character), etc. You will repeat these experiments until you get the desired target quality.
 
 In our case, adding more training data would be the first improvement we can try. Below you’ll find the result trained with 100,00 images, and you’ll notice steady improvement of accuracy.
   
