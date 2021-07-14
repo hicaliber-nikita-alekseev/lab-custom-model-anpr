@@ -269,7 +269,7 @@ def generate_im(char_ims, num_bg_images):
 
 def load_fonts(folder_path):
     font_char_ims = {}
-    fonts = [f for f in os.listdir(folder_path) if f.endswith('.ttf')]
+    fonts = [f for f in os.listdir(folder_path) if f.endswith('.ttf') or f.endswith('.otf')]
     for font in fonts:
         font_char_ims[font] = dict(make_char_ims(
             os.path.join(folder_path, font),
@@ -334,9 +334,9 @@ def write_files(file_id, im, c, bbx):
 
 if __name__ == "__main__":
     im_gen = itertools.islice(generate_ims(), int(sys.argv[1]))
-    for img_idx, (im, c, bbx, p) in enumerate(im_gen):
-        file_id = "{:08d}_{}_{}_{}".format(img_idx, c[:2], c[3:], "1" if p else "0")
-        write_files(file_id, im, c, bbx)
+    for img_idx, (im, code, bbx, out_of_bounds) in enumerate(im_gen):
+        file_id = "{:08d}_{}_{}".format(img_idx, code, int(out_of_bounds))
+        write_files(file_id, im, code, bbx)
         if (img_idx < 10): print(file_id)
 
     print('... {} images and tags were generated'.format(img_idx + 1))
