@@ -47,6 +47,9 @@ from PIL import ImageFont
 import json
 
 import constants
+from importlib import reload
+reload(constants)
+print(constants.CHARS)
 
 n_chr = len(constants.JOIN)
 
@@ -157,7 +160,7 @@ def generate_code():
     license_length = random.randint(3, 7)
     code = [' '] * license_length
     space_index = random.randint(1, license_length - 2) if random.randint(0, 1) else -1
-    available_characters = np.concatenate([constants.NUMS, constants.CHARS])
+    available_characters = constants.NUMS + constants.CHARS
     for index in range(0, license_length):
         if index != space_index:
             code[index] = available_characters[random.randint(0, len(available_characters) - 1)]
