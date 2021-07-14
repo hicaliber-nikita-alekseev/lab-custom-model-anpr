@@ -47,10 +47,6 @@ from PIL import ImageFont
 import json
 
 import constants
-from importlib import reload
-reload(constants)
-print(constants.CHARS)
-
 n_chr = len(constants.JOIN)
 
 
