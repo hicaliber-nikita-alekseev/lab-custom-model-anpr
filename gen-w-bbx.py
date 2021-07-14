@@ -187,11 +187,12 @@ def generate_plate(font_height, char_ims):
     radius = 1 + int(font_height * 0.1 * random.random())
 
     code = generate_code()
-    text_width = sum(char_ims[c].shape[1] for c in constants.JOIN)
+    print(code)
+    text_width = sum(char_ims[c].shape[1] for c in code)
     text_width += (len(code) - 1) * spacing
 
     out_shape = (int(font_height + v_padding * 2),
-                 int(text_width / 14 + h_padding * 2))
+                 int(text_width  + h_padding * 2))
 
     text_color, plate_color = pick_colors()
     text_mask = np.zeros(out_shape)
