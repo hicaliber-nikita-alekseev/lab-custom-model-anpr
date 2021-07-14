@@ -190,7 +190,6 @@ def generate_plate(font_height, char_ims):
     radius = 1 + int(font_height * 0.1 * random.random())
 
     code = generate_code()
-    print(code)
     text_width = sum(char_ims[c].shape[1] for c in code)
     text_width += (len(code) - 1) * spacing
 
@@ -205,10 +204,6 @@ def generate_plate(font_height, char_ims):
     for c in code:
         char_im = char_ims[c]
         ix, iy = int(x), int(y)
-        # print(char_im)
-        print(char_im.shape)
-        print(char_im.shape[0])
-        print(char_im.shape[1])
         text_mask[iy:iy + char_im.shape[0], ix:ix + char_im.shape[1]] = char_im
         x += char_im.shape[1] + spacing
 
