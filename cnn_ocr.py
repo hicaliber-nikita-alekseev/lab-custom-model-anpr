@@ -25,8 +25,8 @@ from tensorflow.contrib.eager.python import tfe
 tf.enable_eager_execution()
 tf.set_random_seed(0)
 
-import constants
-n_chr=len(constants.JOIN)
+from constants import JOIN
+n_chr=len(JOIN)
 
 def parse_args():
     

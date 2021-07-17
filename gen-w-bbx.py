@@ -46,8 +46,8 @@ from PIL import ImageFont
 # import common
 import json
 
-import constants
-n_chr = len(constants.JOIN)
+from constants import NUMS, CHARS, JOIN, OUTPUT_SHAPE, FONT_DIR, FONT_HEIGHT, CLASSES
+n_chr = len(JOIN)
 
 
 def make_char_ims(font_path, output_height):
@@ -55,9 +55,9 @@ def make_char_ims(font_path, output_height):
 
     font = ImageFont.truetype(font_path, font_size)
 
-    height = max(font.getsize(c)[1] for c in constants.JOIN)
+    height = max(font.getsize(c)[1] for c in JOIN)
 
-    for c in constants.JOIN:
+    for c in JOIN:
         # print(c + ';' + str(height))
         width = font.getsize(c)[0]
         im = Image.new("RGBA", (width, height), (0, 0, 0))
@@ -156,7 +156,7 @@ def generate_code():
     license_length = random.randint(3, 7)
     code = [' '] * license_length
     space_index = random.randint(1, license_length - 2) if random.randint(0, 1) else -1
-    available_characters = constants.NUMS + constants.CHARS
+    available_characters = NUMS + CHARS
     for index in range(0, license_length):
         if index != space_index:
             code[index] = available_characters[random.randint(0, len(available_characters) - 1)]
@@ -214,13 +214,13 @@ def generate_bg(num_bg_images):
     while not found:
         fname = "bgs/{:08d}.jpg".format(random.randint(0, num_bg_images - 1))
         bg = cv2.imread(fname, cv2.IMREAD_GRAYSCALE) / 255.
-        if (bg.shape[1] >= constants.OUTPUT_SHAPE[1] and
-                bg.shape[0] >= constants.OUTPUT_SHAPE[0]):
+        if (bg.shape[1] >= OUTPUT_SHAPE[1] and
+                bg.shape[0] >= OUTPUT_SHAPE[0]):
             found = True
 
-    x = random.randint(0, bg.shape[1] - constants.OUTPUT_SHAPE[1])
-    y = random.randint(0, bg.shape[0] - constants.OUTPUT_SHAPE[0])
-    bg = bg[y:y + constants.OUTPUT_SHAPE[0], x:x + constants.OUTPUT_SHAPE[1]]
+    x = random.randint(0, bg.shape[1] - OUTPUT_SHAPE[1])
+    y = random.randint(0, bg.shape[0] - OUTPUT_SHAPE[0])
+    bg = bg[y:y + OUTPUT_SHAPE[0], x:x + OUTPUT_SHAPE[1]]
 
     return bg
 
@@ -228,7 +228,7 @@ def generate_bg(num_bg_images):
 def generate_im(char_ims, num_bg_images):
     bg = generate_bg(num_bg_images)
 
-    plate, plate_mask, code = generate_plate(constants.FONT_HEIGHT, char_ims)
+    plate, plate_mask, code = generate_plate(FONT_HEIGHT, char_ims)
 
     M, out_of_bounds = make_affine_transform(
         from_shape=plate.shape,
@@ -244,7 +244,7 @@ def generate_im(char_ims, num_bg_images):
     # generate outfile
     out = plate * plate_mask + bg * (1.0 - plate_mask)
 
-    out = cv2.resize(out, (constants.OUTPUT_SHAPE[1], constants.OUTPUT_SHAPE[0]))
+    out = cv2.resize(out, (OUTPUT_SHAPE[1], OUTPUT_SHAPE[0]))
 
     out += np.random.normal(scale=0.05, size=out.shape)
     out = np.clip(out, 0., 1.)
@@ -269,7 +269,7 @@ def load_fonts(folder_path):
     for font in fonts:
         font_char_ims[font] = dict(make_char_ims(
             os.path.join(folder_path, font),
-            constants.FONT_HEIGHT
+            FONT_HEIGHT
         ))
 
     return fonts, font_char_ims
@@ -284,7 +284,7 @@ def generate_ims():
 
     """
     variation = 1.0
-    fonts, font_char_ims = load_fonts(constants.FONT_DIR)
+    fonts, font_char_ims = load_fonts(FONT_DIR)
     num_bg_images = len(os.listdir("bgs"))
     while True:
         yield generate_im(font_char_ims[random.choice(fonts)], num_bg_images)
@@ -312,7 +312,7 @@ def write_files(file_id, im, c, bbx):
                   'height': bbx['y2'] - bbx['y1']}],
              'categories': [
                  {'class_id': 0,
-                  'name': constants.CLASSES[0]}]}
+                  'name': CLASSES[0]}]}
     with open(tag_file, 'w') as outfile: json.dump(label, outfile)
     # write cropped image file
     img = Image.fromarray(im * 255).convert("L")
@@ -323,7 +323,7 @@ def write_files(file_id, im, c, bbx):
     nums = []
     for id in range(len(c)):
         char = c[id:id + 1]
-        nums.append(constants.JOIN.index(char))
+        nums.append(JOIN.index(char))
     nums_tag = {"file": file_id + str('.png'), "nums": nums}
     with open(num_file, 'w') as outfile: json.dump(nums_tag, outfile)
 
