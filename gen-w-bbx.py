@@ -46,7 +46,7 @@ from PIL import ImageFont
 # import common
 import json
 
-from common import NUMS, CHARS, JOIN, OUTPUT_SHAPE, FONT_DIR, FONT_HEIGHT, CLASSES
+from common import NUMS, CHARS, JOIN, OUTPUT_SHAPE, FONT_DIR, FONT_HEIGHT, CLASSES, LICENSE_MAX_LEN
 n_chr = len(JOIN)
 
 
@@ -153,15 +153,15 @@ def make_affine_transform(from_shape, to_shape,
 
 
 def generate_code():
-    license_length = random.randint(3, 7)
-    code = [' '] * license_length
+    license_length = random.randint(3, LICENSE_MAX_LEN)
+    new_code = [' '] * license_length
     space_index = random.randint(1, license_length - 2) if random.randint(0, 1) else -1
     available_characters = NUMS + CHARS
     for index in range(0, license_length):
         if index != space_index:
-            code[index] = available_characters[random.randint(0, len(available_characters) - 1)]
+            new_code[index] = available_characters[random.randint(0, len(available_characters) - 1)]
 
-    return ''.join(code)
+    return ''.join(new_code)
 
 
 def rounded_rect(shape, radius):

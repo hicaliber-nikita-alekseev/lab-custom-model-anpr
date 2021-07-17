@@ -25,7 +25,7 @@ from tensorflow.contrib.eager.python import tfe
 tf.enable_eager_execution()
 tf.set_random_seed(0)
 
-from common import JOIN
+from common import JOIN, get_data_pair
 n_chr=len(JOIN)
 
 def parse_args():
@@ -48,27 +48,6 @@ def parse_args():
     parser.add_argument('--model_dir', type=str, default=os.environ.get('SM_MODEL_DIR'))
     
     return parser.parse_known_args()
-
-def get_data_pair(train_dir, annotation_dir):
-    t_jsns = os.listdir(annotation_dir)
-    flg_first = True
-    for i in t_jsns:
-        ext = i.split('.')[1]
-        if ext == 'json':
-            with open(annotation_dir + '/' + i, "r") as jfile:
-                jdata = json.load(jfile)
-                # read image
-                img=Image.open(train_dir + '/' + jdata['file']) 
-                img = img.resize((128, 64))
-                imgs = img if flg_first else np.append(imgs, img)
-                # read license plate numbers
-                n_ = np.array(jdata['nums'])
-                Y_t = np.zeros((n_chr, 7))
-                Y_t[n_, np.arange(7)] = 1
-                Y_ = Y_t if (flg_first) else np.append(Y_, Y_t)
-                flg_first = False
-    digits= np.split(Y_.reshape([-1,7]), 7, axis=1)
-    return imgs.reshape([-1, 128, 64, 1])/255., [i.reshape([-1,81]) for i in digits]
 
 def model(input_shape):
     # Define the input placeholder as a tensor with shape input_shape. Think of this as your input image!
