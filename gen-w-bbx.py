@@ -46,7 +46,7 @@ from PIL import ImageFont
 # import common
 import json
 
-from constants import NUMS, CHARS, JOIN, OUTPUT_SHAPE, FONT_DIR, FONT_HEIGHT, CLASSES
+from common import NUMS, CHARS, JOIN, OUTPUT_SHAPE, FONT_DIR, FONT_HEIGHT, CLASSES
 n_chr = len(JOIN)
 
 
