@@ -78,13 +78,13 @@ def model(input_shape):
     X = tf.keras.layers.Flatten()(X)
 
     #----------------------------------------------------------
-    d1 = tf.keras.layers.Dense(81, activation='softmax', name='d1')(X)
-    d2 = tf.keras.layers.Dense(81, activation='softmax', name='d2')(X)
-    d3 = tf.keras.layers.Dense(81, activation='softmax', name='d3')(X)
-    d4 = tf.keras.layers.Dense(81, activation='softmax', name='d4')(X)
-    d5 = tf.keras.layers.Dense(81, activation='softmax', name='d5')(X)
-    d6 = tf.keras.layers.Dense(81, activation='softmax', name='d6')(X)
-    d7 = tf.keras.layers.Dense(81, activation='softmax', name='d7')(X)
+    d1 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d1')(X)
+    d2 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d2')(X)
+    d3 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d3')(X)
+    d4 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d4')(X)
+    d5 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d5')(X)
+    d6 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d6')(X)
+    d7 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d7')(X)
     
     model = tf.keras.Model(inputs = X_input, 
                   outputs = [d1,d2,d3,d4,d5,d6,d7],
@@ -112,10 +112,10 @@ if __name__ == "__main__":
             metrics = ["accuracy"])
         
     # use hyperparameters ex) args.epochs, args.batch_size, etc.
-    model_k.fit(t_imgs, [i.reshape([-1,81]) for i in t_annotations], 
-        validation_data=(v_imgs, [i.reshape([-1,81]) for i in v_annotations]), 
-        epochs=args.epochs, batch_size=args.batch_size, verbose=args.verbose)
-        
+    model_k.fit(t_imgs, [i.reshape([-1, n_chr]) for i in t_annotations],
+                validation_data=(v_imgs, [i.reshape([-1, n_chr]) for i in v_annotations]),
+                epochs=args.epochs, batch_size=args.batch_size, verbose=args.verbose)
+
     scores = model_k.evaluate(v_imgs, [i for i in v_annotations], batch_size=args.batch_size, verbose=1, sample_weight=None)
     print("scores: ", scores)
     
