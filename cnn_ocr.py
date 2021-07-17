@@ -25,7 +25,7 @@ from tensorflow.contrib.eager.python import tfe
 tf.enable_eager_execution()
 tf.set_random_seed(0)
 
-from common import JOIN, get_data_pair
+from common import JOIN, get_data_pair, model
 n_chr=len(JOIN)
 
 def parse_args():
@@ -49,48 +49,6 @@ def parse_args():
     
     return parser.parse_known_args()
 
-def model(input_shape):
-    # Define the input placeholder as a tensor with shape input_shape. Think of this as your input image!
-    X_input = tf.keras.Input(input_shape)
-
-    # Zero-Padding: pads the border of X_input with zeroes
-    X = tf.keras.layers.ZeroPadding2D((2, 2))(X_input)
-
-    # CONV0 -> BN -> RELU -> MAXPOOL applied to X
-    X = tf.keras.layers.Conv2D(48, (5, 5), strides = (1, 1), name = 'conv0')(X)
-    X = tf.keras.layers.BatchNormalization(axis = 3, name = 'bn0')(X)
-    X = tf.keras.layers.Activation('relu')(X)
-    X = tf.keras.layers.MaxPooling2D((2, 2), strides = (2, 2), name='max_pool0')(X)
-
-    # CONV1 -> BN -> RELU -> MAXPOOL applied to X
-    X = tf.keras.layers.Conv2D(64, (5, 5), strides = (1, 1), name = 'conv1')(X)
-    X = tf.keras.layers.BatchNormalization(axis = 3, name = 'bn1')(X)
-    X = tf.keras.layers.Activation('relu')(X)
-    X = tf.keras.layers.MaxPooling2D((1, 2), strides = (2, 2), name='max_pool1')(X)
-
-    # CONV2 -> BN -> RELU -> MAXPOOL applied to X
-    X = tf.keras.layers.Conv2D(64, (5, 5), strides = (1, 1), name = 'conv2')(X)
-    X = tf.keras.layers.BatchNormalization(axis = 3, name = 'bn2')(X)
-    X = tf.keras.layers.Activation('relu')(X)
-    X = tf.keras.layers.MaxPooling2D((2, 2), strides = (2, 2), name='max_pool2')(X)
-
-    # FLATTEN X (means convert it to a vector) + FULLYCONNECTED
-    X = tf.keras.layers.Flatten()(X)
-
-    #----------------------------------------------------------
-    d1 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d1')(X)
-    d2 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d2')(X)
-    d3 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d3')(X)
-    d4 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d4')(X)
-    d5 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d5')(X)
-    d6 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d6')(X)
-    d7 = tf.keras.layers.Dense(n_chr, activation='softmax', name='d7')(X)
-    
-    model = tf.keras.Model(inputs = X_input, 
-                  outputs = [d1,d2,d3,d4,d5,d6,d7],
-                  name='CNN_ANPR')
-
-    return model
 
 if __name__ == "__main__":
 
