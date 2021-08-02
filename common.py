@@ -6,7 +6,10 @@ SPACE = [' ']
 JOIN = NUMS + CHARS + SPACE
 LICENSE_MAX_LEN = 7
 
-OUTPUT_SHAPE = (64, 128)
+IMAGE_WIDTH = 128
+IMAGE_HEIGHT = 64
+
+OUTPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH)
 CLASSES = ['License Plate']
 
 
@@ -26,7 +29,7 @@ def get_data_pair(train_dir, annotation_dir):
                 jdata = json.load(jfile)
                 # read image
                 img = Image.open(train_dir + '/' + jdata['file'])
-                img = img.resize((128, 64))
+                img = img.resize((IMAGE_WIDTH, IMAGE_HEIGHT))
                 imgs = img if flg_first else np.append(imgs, img)
                 # read license plate numbers
                 n_ = np.pad(jdata['nums'], (0, LICENSE_MAX_LEN - len(jdata['nums'])), 'constant',
@@ -36,7 +39,7 @@ def get_data_pair(train_dir, annotation_dir):
                 Y_ = Y_t if flg_first else np.append(Y_, Y_t)
                 flg_first = False
     Y_ = np.split(Y_.reshape([-1, LICENSE_MAX_LEN]), LICENSE_MAX_LEN, axis=1)
-    return imgs.reshape([-1, 128, 64, 1]) / 255., [i.reshape([-1, n_chr]) for i in Y_]
+    return imgs.reshape([-1, IMAGE_WIDTH, IMAGE_HEIGHT, 1]) / 255., [i.reshape([-1, n_chr]) for i in Y_]
 
 
 def model(input_shape):

@@ -25,7 +25,7 @@ from tensorflow.contrib.eager.python import tfe
 tf.enable_eager_execution()
 tf.set_random_seed(0)
 
-from common import JOIN, get_data_pair, model
+from common import JOIN, IMAGE_WIDTH, IMAGE_HEIGHT, get_data_pair, model
 n_chr=len(JOIN)
 
 def parse_args():
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     t_imgs, t_annotations = get_data_pair(args.train, args.train_annotation)
     v_imgs, v_annotations = get_data_pair(args.validation, args.validation_annotation)
     
-    input_shape = (128,64,1)
+    input_shape = (IMAGE_WIDTH,IMAGE_HEIGHT,1)
     model_k = model(input_shape)
         
     # use hyperparameters ex) args.learning_rate
